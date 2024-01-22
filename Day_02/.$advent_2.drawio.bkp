@@ -1,0 +1,25 @@
+<mxfile host="Electron" modified="2023-12-24T19:47:30.316Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.5 Chrome/114.0.5735.243 Electron/25.3.1 Safari/537.36" etag="gGyox-Gmq6CCHzy4PkFw" version="21.6.5" type="device">
+  <diagram name="Page-1" id="sLjjwdctPzxEMkYiNn4l">
+    <mxGraphModel dx="1026" dy="772" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="wkJ1A8zoV_REFMKiBFZn-3" value="Main" style="swimlane;whiteSpace=wrap;html=1;fillColor=#FFFFFF;swimlaneLine=1;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="60" y="210" width="450" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="wkJ1A8zoV_REFMKiBFZn-4" value="&lt;b&gt;Input&lt;/b&gt;:&amp;nbsp;&lt;br&gt;Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green&lt;br&gt;&lt;br&gt;&lt;b&gt;Steps:&lt;br&gt;&lt;br&gt;&lt;/b&gt;* Loop through each line in the .txt file&lt;br&gt;** keep a counter, starting at 1, indicative of the game #&lt;br&gt;&lt;br&gt;* Pass line over to string_parser&lt;br&gt;** remove &quot;Game %i:&quot;&lt;br&gt;** split the remaining text by delimiter&lt;br&gt;** assign to allocated memory (variable - dict?) a dict mapping of the results&lt;br&gt;*** [&lt;b&gt;(blue:3, red:4), (red:1, green:2), (blue:6, green:2)]&lt;br&gt;&lt;br&gt;* &lt;/b&gt;pass pointer of dict of results to game_validator(*dict?)&lt;br&gt;** for each game (iterate through dict)&lt;br&gt;** for each result in game (iterate through each colour cube)&lt;br&gt;** match the string of the colour cube with the colour max variable, compare&lt;br&gt;** flip game_valid flag to 1 if good&lt;br&gt;&lt;br&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="wkJ1A8zoV_REFMKiBFZn-3">
+          <mxGeometry x="20" y="-45" width="430" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="wkJ1A8zoV_REFMKiBFZn-6" value="Parsed:&lt;br&gt;1 blue&lt;br&gt;2 green&lt;br&gt;Compare w/ limits" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="260" y="590" width="170" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="wkJ1A8zoV_REFMKiBFZn-7" value="Parsed:&lt;br&gt;6 blue&lt;br&gt;2 green&lt;br&gt;Compare w/ limits" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="590" width="170" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="wkJ1A8zoV_REFMKiBFZn-5" value="Parsed:&lt;br&gt;3 blue&lt;br&gt;4 red&lt;br&gt;&lt;br&gt;Compare w/ limits" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="600" width="170" height="130" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/workspaces/advent-of-code/amir/build/Day_01",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc   -g -o CMakeFiles/Day_01.dir/Day_01.c.o -c /workspaces/advent-of-code/amir/Day_01/Day_01.c",
+  "file": "/workspaces/advent-of-code/amir/Day_01/Day_01.c"
+},
+{
+  "directory": "/workspaces/advent-of-code/amir/build/Day_02",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc   -g -o CMakeFiles/Day_02.dir/Day_02.c.o -c /workspaces/advent-of-code/amir/Day_02/Day_02.c",
+  "file": "/workspaces/advent-of-code/amir/Day_02/Day_02.c"
+}
+]
