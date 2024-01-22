@@ -1,1 +1,0 @@
-/usr/bin/aarch64-linux-gnu-gcc -g -rdynamic CMakeFiles/Day_02.dir/Day_02.c.o -o Day_02 
