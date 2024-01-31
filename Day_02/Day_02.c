@@ -10,7 +10,7 @@ const int max_red_cubes = 12;     // maximum amount of red cubes possible per dr
 const int max_green_cubes = 13;   // maximum amount of green cubes possible per draw
 const int max_blue_cubes = 14;    // maximum amount of blue cubes possible per draw
 const char *game_delimeter = ";"; // delimeter indicating new hand of cubes within a game
-const char *junk_delimeter = ":"; // delimeter indicating the split of where the content we want begins (to the right)
+const char *junk_delimeter = ":"; // delimeter indicating the split of where the content we want begins (to the right) 
 
 void main()
 {
