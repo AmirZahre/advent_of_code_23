@@ -2,15 +2,19 @@
 #include <stdlib.h>
 #include <string.h>
 
+// #define directive
+#define MAX_RED_CUBES 12
+#define MAX_GREEN_CUBES 13
+#define MAX_BLUE_CUBES 14
+
+// function prototype
 void string_parser(char const *line, char const *game_delimeter, char const *junk_delimeter, char *games[static 100]);
 void *safe_malloc(size_t n);
 FILE *getfile();
 
-const int max_red_cubes = 12;     // maximum amount of red cubes possible per draw
-const int max_green_cubes = 13;   // maximum amount of green cubes possible per draw
-const int max_blue_cubes = 14;    // maximum amount of blue cubes possible per draw
-const char *game_delimeter = ";"; // delimeter indicating new hand of cubes within a game
-const char *junk_delimeter = ":"; // delimeter indicating the split of where the content we want begins (to the right) 
+// variable declaration with definition
+static const char *game_delimeter = ";"; // delimeter indicating new hand of cubes within a game
+static const char *junk_delimeter = ":"; // delimeter indicating the split of where the content we want begins (to the right) 
 
 void main()
 {
