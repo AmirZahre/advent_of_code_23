@@ -84,33 +84,24 @@ void string_parser(const char *line, char *games[static 100])
     int game_number = get_game_number(line, parsed_line_excluding_game_number, length_of_unparsed_line);
 
     printf("game_number %i\n", game_number);
-
-
-
-    // printf("\n\n%c\n\n", first);
-
-    // printf("PARSED STRING: %s\n\n", parsed_line_excluding_game_number);         // retreives all to the right of "Game <number>: "
-
-    // printf("%i\n", length_of_unparsed_line);
-    
-    // printf("%s\n", game_number);
 }
 
 
 int get_game_number(const char *line, const char *parsed_line_excluding_game_number, const int length_of_unparsed_line)
 {
-    static const int length_of_word_and_space_prefacing_game_number = 5;
     const int length_of_parsed_line_excluding_game_number = strlen(parsed_line_excluding_game_number);
 
+    printf("length_of_parsed_line_excluding_game_number:\n%i\n\n", length_of_parsed_line_excluding_game_number);  
+
     const int idx_end_of_number = length_of_unparsed_line - length_of_parsed_line_excluding_game_number;
-    const int idx_number_start = idx_end_of_number - length_of_word_and_space_prefacing_game_number; // index begins one value to the left of the first digit
+    static const int idx_number_start = 5; // index begins one value to the left of the first digit
     const int idx_number_end_inclusive = idx_end_of_number; // index ends on the last digit
     const int game_number_length = idx_number_end_inclusive - idx_number_start + 1;
 
-
-    // printf("idx_number_start:\n%i\n\n", idx_number_start);  
-    // printf("idx_number_end_inclusive:\n%i\n\n\n", idx_number_end_inclusive);
-    // printf("game_number_length:\n%i\n\n\n", game_number_length);  
+    printf("idx_end_of_number:\n%i\n\n", idx_end_of_number);  
+    printf("idx_number_start:\n%i\n\n", idx_number_start);  
+    printf("idx_number_end_inclusive:\n%i\n\n\n", idx_number_end_inclusive);
+    printf("game_number_length:\n%i\n\n\n", game_number_length);  
 
     char *str_number = safe_malloc(game_number_length + 1);
 
