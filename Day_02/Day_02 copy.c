@@ -10,8 +10,7 @@
 #define FILE_NAME "input.txt" // .txt input file to be read
 
 // function prototype
-void string_parser(const char *line, char *games[static 100]);
-int get_game_number();
+void string_parser(char const *line, char *games[static 100]);
 void *safe_malloc(size_t n);
 FILE *getfile();
 
@@ -31,7 +30,7 @@ void main()
 
         int game_valid = 0;    // flag to track validity of each game
         char *games[100] = {}; // initialize array where games will be added to
-
+        
         string_parser(line, games);
 
         /*
@@ -45,7 +44,7 @@ void main()
             sum_of_ids += game_id;
         }
 
-        // printf("\nThe sum of game IDs for those that were valid is %i.\n", sum_of_ids);
+        printf("\nThe sum of game IDs for those that were valid is %i.\n", sum_of_ids);
 
         game_id++; // incriment game_id
     }
@@ -67,58 +66,57 @@ void main()
  * @param games: the array where each block represents a throw.
  * @return void, updates the games array via pointer to reflect groupings of each throw for further parsing
  */
-//Game 15532: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
-void string_parser(const char *line, char *games[static 100])
+// 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+void string_parser(char const *line, char *games[static 100])
 {
     // variable declaration with definition
     static const char *game_delimeter = ";"; // delimeter indicating new hand of cubes within a game
     static const char *junk_delimeter = ":"; // delimeter indicating the split of where the content we want begins (to the right)
-    
-    const int length_of_unparsed_line = strlen(line);
-    const char *parsed_line_excluding_game_number = strstr(line, junk_delimeter); // passes line and junk_delimeter to strstr, returns all to the right of delim
-    
-    
-    char game_number[] = "0"; // create memory destination, can be modified as it is a Character Array
+    int i = 0;
+    int n = 0;                                              // initialize index for line walkthrough
+    char *parsed_string = strstr(line, junk_delimeter) + 2; // passes line and junk_delimeter to strstr, returns all to the right of delim
+    printf("PARSED STRING: %s\n\n", parsed_string);         // retreives all to the right of "Game <number>: "
+    // printf("games[n]: %s\n", games[n]);
+    printf("LOOP START: \n\n");
 
+    while (strstr(parsed_string, game_delimeter) != NULL)
+    {
+        char *temp_parsed_string = strstr(parsed_string, game_delimeter);
+        int temp_length_remaining_string = strlen(temp_parsed_string);
+        int temp_length_original_string = strlen(parsed_string);
+        int temp_length_trimmed_string = temp_length_original_string - temp_length_remaining_string;
 
-    get_game_number(line, parsed_line_excluding_game_number, length_of_unparsed_line);
+        printf("temp length of trimmed string\n%i\n\n", temp_length_trimmed_string);
+        char *trimmed_string = parsed_string + temp_length_trimmed_string;
+        // printf("\n%s\n", trimmed_string);
 
-    // printf("\n\n%c\n\n", first);
+        char *temp = safe_malloc(sizeof(char) * temp_length_trimmed_string + 1);
 
+        strncat(temp, parsed_string, temp_length_trimmed_string);
+        printf("temp\n%s\n\n", temp);
 
+        parsed_string = temp_parsed_string;
+        printf("parsed_string:\n%s\n\n", parsed_string);
 
+        parsed_string += 2;
 
+        free(temp);
+    }
 
-    // printf("PARSED STRING: %s\n\n", parsed_line_excluding_game_number);         // retreives all to the right of "Game <number>: "
+    /*
+    opt 1: iterate through each character until delim is reached?
+    * break when the delim is reached
+    * do stuff until that delim is reached:
+    ** STUFF:
+    *** if character is int, add char to temp_num
+    NOTE: want to check if the next character also is an int; if so, concatonate to the temp_num
+    else character is either empty space or beginning of word
+    NOTE: red green blue each begin with a unique first char - can look into memory-optimized approach
 
-    // printf("%i\n", length_of_unparsed_line);
-    
-    // printf("%s\n", game_number);
+    ISSUE:
+
+    */
 }
-
-
-int get_game_number(const char *line, const char *parsed_line_excluding_game_number, const int length_of_unparsed_line)
-{
-    static const int length_of_word_and_space_prefacing_game_number = 5;
-    const int length_of_parsed_line_excluding_game_number = strlen(parsed_line_excluding_game_number);
-
-    const int idx_number_start_inclusive = length_of_unparsed_line - length_of_parsed_line_excluding_game_number - length_of_word_and_space_prefacing_game_number + 1;
-    const int idx_number_end_inclusive = length_of_unparsed_line - length_of_parsed_line_excluding_game_number;
-
-    printf("\nline\n%s\n\nparsed_line_excluding_game_number\n%s\n\n", line, parsed_line_excluding_game_number);
-    printf("length_of_parsed_line_excluding_game_number:\n%i\n\n", length_of_parsed_line_excluding_game_number);  
-    printf("length_of_unparsed_line:\n%i\n\n", length_of_unparsed_line);
-    printf("length_of_word_and_space_prefacing_game_number:\n%i\n\n\n", length_of_word_and_space_prefacing_game_number);  
-
-
-    printf("idx_number_start_inclusive:\n%i\n\n\n", idx_number_start_inclusive);  
-    printf("idx_number_end_inclusive:\n%i\n\n\n", idx_number_end_inclusive);  
-
-
-}
-
-
-
 
 /**
  * @brief Wrapper around standard malloc function that handles memory allocation gracefully
