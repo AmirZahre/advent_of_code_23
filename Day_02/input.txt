@@ -1,1 +1,1 @@
-Game 15243: 36 blue, 4 red;
+Game 15243: 3 blue, 4 red; 123244 red, 2 green, 6 blue; 2 green
