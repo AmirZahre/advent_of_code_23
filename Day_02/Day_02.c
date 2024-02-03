@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 // #define directive
 #define MAX_RED_CUBES 12
@@ -10,7 +11,7 @@
 #define FILE_NAME "input.txt" // .txt input file to be read
 
 // function prototype
-void string_parser(const char *line, char *games[static 100]);
+void string_parser(const char *line);
 int get_game_number();
 void *safe_malloc(size_t n);
 FILE *getfile();
@@ -30,9 +31,9 @@ void main()
         // printf("%s\n", line);                  // WIP tracking
 
         int game_valid = 0;    // flag to track validity of each game
-        char *games[100] = {}; // initialize array where games will be added to
+        // char *games[100] = {}; // initialize array where games will be added to
 
-        string_parser(line, games);
+        string_parser(line);
 
         /*
         ##########################
@@ -68,69 +69,106 @@ void main()
  * @return void, updates the games array via pointer to reflect groupings of each throw for further parsing
  */
 //Game 15532: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
-void string_parser(const char *line, char *games[static 100])
+void string_parser(const char *line)
 {
     // variable declaration with definition
     static const char *game_delimeter = ";"; // delimeter indicating new hand of cubes within a game
     static const char *junk_delimeter = ":"; // delimeter indicating the split of where the content we want begins (to the right)
     
     const int length_of_unparsed_line = strlen(line);
-    const char *parsed_line_excluding_game_number = strstr(line, junk_delimeter); // passes line and junk_delimeter to strstr, returns all to the right of delim
+    const char *parsed_line_excluding_game_number = strstr(line, junk_delimeter) + 2; // passes line and junk_delimeter to strstr, returns all to the right of delim
     
     
-    // char game_number[] = "0"; // create memory destination, can be modified as it is a Character Array
+    // printf("The games played are: %s\n", parsed_line_excluding_game_number);
 
 
+// 36 blue, 4 red;
+
+    int x = 0; // index for the tmp_current_cube_count array
+    char *tmp_current_cube_count = safe_malloc(100); // resets t
+
+    for (int i = 0; i < strlen(parsed_line_excluding_game_number); i++)
+    {
+        char current_character = parsed_line_excluding_game_number[i];
+
+        if (isdigit(current_character)){
+
+            tmp_current_cube_count[x] = current_character;
+            
+            x++; 
+        } else if (current_character == 'b' || current_character == 'r' || current_character == 'g') { // if not digit, we assume we have the entire count for the specific colour. now validate.
+
+            // printf("the original character is %c\n", current_character);
+            
+            int converted_to_int_tmp_current_cube_count = atoi(tmp_current_cube_count);
+            printf("%i\n", converted_to_int_tmp_current_cube_count);
+            
+            switch (parsed_line_excluding_game_number[i]) {
+                case 'b': printf("Blue\n");
+                    i += 5;
+                    break;
+                case 'r': printf("Red\n");
+                    i += 4;
+                    break;
+                case 'g': printf("Green\n");
+                    i += 6;
+                    break;
+            }
+            
+            
+            
+            
+            memset(tmp_current_cube_count, 0, 100);
+            x = 0;
+        }
+    }
+    
     int game_number = get_game_number(line, parsed_line_excluding_game_number, length_of_unparsed_line);
+    printf("\n\nThe game number is: %i\n", game_number);
 
-    printf("game_number %i\n", game_number);
+}
+
+/*
+Takes the cube count to validate
+The first letter of the colour to validate against
+The current position within the for loop (i) so that this function will bump the for loop forward past the characters of the respective colour
+
+*/
+int validate_cube(int cube_count, char colour_letter, int current_loop_position)
+{
+
+
 }
 
 
 int get_game_number(const char *line, const char *parsed_line_excluding_game_number, const int length_of_unparsed_line)
 {
     const int length_of_parsed_line_excluding_game_number = strlen(parsed_line_excluding_game_number);
-
-    printf("length_of_parsed_line_excluding_game_number:\n%i\n\n", length_of_parsed_line_excluding_game_number);  
-
     const int idx_end_of_number = length_of_unparsed_line - length_of_parsed_line_excluding_game_number;
-    static const int idx_number_start = 5; // index begins one value to the left of the first digit
+    int idx_number_start = 5; // index begins one value to the left of the first digit
     const int idx_number_end_inclusive = idx_end_of_number; // index ends on the last digit
     const int game_number_length = idx_number_end_inclusive - idx_number_start + 1;
 
-    printf("idx_end_of_number:\n%i\n\n", idx_end_of_number);  
-    printf("idx_number_start:\n%i\n\n", idx_number_start);  
-    printf("idx_number_end_inclusive:\n%i\n\n\n", idx_number_end_inclusive);
-    printf("game_number_length:\n%i\n\n\n", game_number_length);  
-
     char *str_number = safe_malloc(game_number_length + 1);
 
-    int i = idx_number_start;
-    int x = 0;
+    int x = 0; // index for the str array
 
-
-    while (i < idx_number_end_inclusive)
+    while (idx_number_start < idx_number_end_inclusive)
     {
-        str_number[x] = line[i];
-        i++;
+        str_number[x] = line[idx_number_start];
+        idx_number_start++;
         x++;
     }
-
     int int_number = strtol(str_number, NULL, 0);
 
     free(str_number);
 
     return int_number;
 
-
-
-
-
-
-    // printf("\nline\n%s\n\nparsed_line_excluding_game_number\n%s\n\n", line, parsed_line_excluding_game_number);
-    // printf("length_of_parsed_line_excluding_game_number:\n%i\n\n", length_of_parsed_line_excluding_game_number);  
-    // printf("length_of_unparsed_line:\n%i\n\n", length_of_unparsed_line);
-    // printf("length_of_word_and_space_prefacing_game_number:\n%i\n\n\n", length_of_word_and_space_prefacing_game_number);  
+    // printf("idx_end_of_number:\n%i\n\n", idx_end_of_number);  
+    // printf("idx_number_start:\n%i\n\n", idx_number_start);  
+    // printf("idx_number_end_inclusive:\n%i\n\n\n", idx_number_end_inclusive);
+    // printf("game_number_length:\n%i\n\n\n", game_number_length);  
 }
 
 
