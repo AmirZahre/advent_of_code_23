@@ -1,5 +1,5 @@
 # Advent of Code 2023 Day 1
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.2.0)
 project(Day_01 LANGUAGES C)
 
 enable_testing()

@@ -7,7 +7,7 @@
 #define MAX_RED_CUBES 12
 #define MAX_GREEN_CUBES 13
 #define MAX_BLUE_CUBES 14
-#define FILE_NAME "input2.txt" // .txt input file to be read
+#define FILE_NAME "input.txt" // .txt input file to be read
 
 // function prototypes
 void string_parser(const char *line, int *sum_of_ids);
