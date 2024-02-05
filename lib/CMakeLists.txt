@@ -9,5 +9,7 @@ source/safe_malloc.c
 # add_subdirectory("source")
 
 
-target_include_directories(safe_malloc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/headers)
-target_include_directories(safe_malloc PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/source)
+target_include_directories(safe_malloc 
+PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/headers
+PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/source
+)
