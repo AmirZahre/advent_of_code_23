@@ -3,17 +3,16 @@
 #include <string.h>
 #include <ctype.h>
 
-// #define directive
+// #define directives
 #define MAX_RED_CUBES 12
 #define MAX_GREEN_CUBES 13
 #define MAX_BLUE_CUBES 14
-
 #define FILE_NAME "input.txt" // .txt input file to be read
 
-// function prototype
-void string_parser(const char *line);
+// function prototypes
+void string_parser(const char *line, int *sum_of_ids);
 int validate_cube_toss(char *parsed_line_excluding_game_number);
-int get_game_number();
+int get_game_number(const char *line, const char *parsed_line_excluding_game_number, const int length_of_unparsed_line);
 void *safe_malloc(size_t n);
 FILE *getfile();
 
@@ -22,66 +21,41 @@ void main()
     FILE *fp = getfile(); // open file
 
     int sum_of_ids = 0; // sum of the IDs of the games possible
-    int game_id = 1;    // tracking the game ID to be potentially added to sum_of_ids for the final answer
     const int max_string_length = 256;
     char *line = safe_malloc(max_string_length + 1);
 
-    while (fgets(line, max_string_length, fp) != NULL)
+
+    while (fgets(line, max_string_length, fp) != NULL) // for each line
     {
-        // printf("Game %i results:\n", game_id); // WIP tracking
-        // printf("%s\n", line);                  // WIP tracking
+        string_parser(line, &sum_of_ids);
 
-        int game_valid = 0; // flag to track validity of each game
-        // char *games[100] = {}; // initialize array where games will be added to
-
-        string_parser(line);
-
-        /*
-        ##########################
-        FINAL ANSWER
-        If game is valid, incriment sum_of_ids by the current game_id
-        ##########################,
-        */
-        if (game_valid == 1)
-        {
-            sum_of_ids += game_id;
-        }
-
-        // printf("\nThe sum of game IDs for those that were valid is %i.\n", sum_of_ids);
-
-        game_id++; // incriment game_id
-        printf("\n\n");
     }
+    printf("sum_of_ids %i\n", sum_of_ids);
 
     fclose(fp); // close file
     free(line);
 }
 
-/**
- * @brief Takes the current line, parses it, and returns an array containing the cube results grouped by throw
- * @details Initially parses the first part of the line - which is the same for each line aside from the game number.
- * The result from the initial parse is that where the first character is (should be!) the first number of the line.
- * With this newly parsed string, the function iterates through each character until a delimeter is found.
- * Each character processed prior to that delimeter is added to a block within the games array. The block will
- * therefore contain a single throws' worth of information. The program then continues to iterate through the line
- * from where it left off at the delimeter, doing the same process onto the next block within the array.
- * What is returned it the games array, which contains blocks for each throw.
- * @param line: pointer to the current line
- * @param games: the array where each block represents a throw.
- * @return void, updates the games array via pointer to reflect groupings of each throw for further parsing
- */
 // Game 15532: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
-void string_parser(const char *line)
+void string_parser(const char *line, int *sum_of_ids)
 {
     // variable declaration with definition
     static const char *junk_delimeter = ":"; // delimeter indicating the split of where the content we want begins (to the right)
 
     char *parsed_line_excluding_game_number = strstr(line, junk_delimeter) + 2; // passes line and junk_delimeter to strstr, returns all to the right of delim
-    validate_cube_toss(parsed_line_excluding_game_number);
 
-    const int length_of_unparsed_line = strlen(line);
-    int game_number = get_game_number(line, parsed_line_excluding_game_number, length_of_unparsed_line);
-    printf("The game number is: %i", game_number);
+    /*
+    ##########################
+    FINAL ANSWER
+    If game is valid, incriment sum_of_ids by the current game_id
+    ##########################,
+    */
+    if (validate_cube_toss(parsed_line_excluding_game_number) == 1)
+    {
+        const int length_of_unparsed_line = strlen(line);
+        int game_number = get_game_number(line, parsed_line_excluding_game_number, length_of_unparsed_line);
+        *sum_of_ids += game_number;
+    }
 }
 
 /*
@@ -91,16 +65,10 @@ The current position within the for loop (i) so that this function will bump the
 */
 int validate_cube_toss(char *parsed_line_excluding_game_number)
 {
-    // 36 blue, 4 red;
-
     int x = 0;                                       // index for the tmp_current_cube_count array
     char *tmp_current_cube_count = safe_malloc(100); // resets t
 
-    static const int max_blue = 14;
-    static const int max_red = 12;
-    static const int max_green = 13;
-
-    int game_is_valid = 1;
+    int is_game_valid = 1;
 
     for (int i = 0; i < strlen(parsed_line_excluding_game_number); i++)
     {
@@ -113,31 +81,31 @@ int validate_cube_toss(char *parsed_line_excluding_game_number)
         }
         else if (current_character == 'b' || current_character == 'r' || current_character == 'g') // if not digit, we assume we have the entire count for the specific colour. now validate.
         { 
-            int converted_to_int_tmp_current_cube_count = atoi(tmp_current_cube_count); // convert string to int. this is the number for a specific colour of the cube toss.
+            int int_current_cube_count = atoi(tmp_current_cube_count); // convert string to int. this is the number for a specific colour of the cube toss.
 
             switch (parsed_line_excluding_game_number[i])
             {
             case 'b':
-                if (converted_to_int_tmp_current_cube_count > max_blue){
-                    game_is_valid = 0;
-                    printf("Toss is not valid due to the colour Blue appearing %i times.\n\n", converted_to_int_tmp_current_cube_count);
-                    return game_is_valid;
+                if (int_current_cube_count > MAX_BLUE_CUBES){
+                    is_game_valid = 0;
+                    // printf("Toss is not valid due to the colour Blue appearing %i times.\n\n", int_current_cube_count);
+                    return is_game_valid;
                 }
                 i += 5;
                 break;
             case 'r':
-                if (converted_to_int_tmp_current_cube_count > max_red){
-                    game_is_valid = 0;
-                    printf("Toss is not valid due to the colour Red appearing %i times.\n\n", converted_to_int_tmp_current_cube_count);
-                    return game_is_valid;
+                if (int_current_cube_count > MAX_RED_CUBES){
+                    is_game_valid = 0;
+                    // printf("Toss is not valid due to the colour Red appearing %i times.\n\n", int_current_cube_count);
+                    return is_game_valid;
                 }
                 i += 4;
                 break;
             case 'g':
-                if (converted_to_int_tmp_current_cube_count > max_green){
-                    game_is_valid = 0;
-                    printf("Toss is not valid due to the colour Green appearing %i times.\n\n", converted_to_int_tmp_current_cube_count);
-                    return game_is_valid;
+                if (int_current_cube_count > MAX_GREEN_CUBES){
+                    is_game_valid = 0;
+                    // printf("Toss is not valid due to the colour Green appearing %i times.\n\n", int_current_cube_count);
+                    return is_game_valid;
                 }
                 i += 6;
                 break;
@@ -146,9 +114,7 @@ int validate_cube_toss(char *parsed_line_excluding_game_number)
             x = 0;
         }
     }
-
-
-
+    return 1;
 
 }
 
