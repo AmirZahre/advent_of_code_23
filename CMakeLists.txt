@@ -13,9 +13,14 @@ include(CPack)
 add_subdirectory("src")
 add_subdirectory("lib")
 
-# file(GLOB SOURCES "src/*/*.c")
 
-# add_executable(${PROJECT_NAME} ${SOURCES})
+
+# include_directories("lib")
+
+# add_executable(AdventofCode2023
+# #   src/*/*.c
+#   lib/headers/safe_malloc.h
+# )
 
 
 # target_link_libraries(${PROJECT_NAME} PUBLIC safe_malloc)
