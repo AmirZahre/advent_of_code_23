@@ -7,7 +7,7 @@
 int main(void){
     printf("Hello\n");
 
-    char *filename = "../2023/Day_03/input.txt";    // Specify .txt file
+    char *filename = "/workspaces/advent_code_23/2023/Day_03/input.txt";    // Specify .txt file
     FILE *fp = getFile(filename);
 
     int max_string_length = 256;

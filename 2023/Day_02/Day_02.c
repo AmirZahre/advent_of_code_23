@@ -3,6 +3,9 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "safe_malloc.h"
+#include "get_file.h"
+
 // #define directives
 #define MAX_RED_CUBES 12
 #define MAX_GREEN_CUBES 13
@@ -13,12 +16,12 @@
 void string_parser(const char *line, int *sum_of_ids);
 int validate_cube_toss(char *parsed_line_excluding_game_number);
 int get_game_number(const char *line, const char *parsed_line_excluding_game_number, const int length_of_unparsed_line);
-void *safe_malloc(size_t n);
-FILE *getfile();
+
 
 void main()
 {
-    FILE *fp = getfile(); // open file
+    char *filename = "/workspaces/advent_code_23/2023/Day_02/" FILE_NAME;    // Specify .txt file
+    FILE *fp = getFile(filename);
 
     int sum_of_ids = 0; // sum of the IDs of the games possible
     const int max_string_length = 256;
@@ -141,45 +144,4 @@ int get_game_number(const char *line, const char *parsed_line_excluding_game_num
     free(str_number);
 
     return int_number;
-
-    // printf("idx_end_of_number:\n%i\n\n", idx_end_of_number);
-    // printf("idx_number_start:\n%i\n\n", idx_number_start);
-    // printf("idx_number_end_inclusive:\n%i\n\n\n", idx_number_end_inclusive);
-    // printf("game_number_length:\n%i\n\n\n", game_number_length);
-}
-
-/**
- * @brief Wrapper around standard malloc function that handles memory allocation gracefully
- * @details https://stackoverflow.com/a/35027099
- * If malloc fails to allocate memory (which would cause it to return NULL),
- * rather than returning NULL to the caller, safe_malloc prints an error message to
- * stderr and then calls abort() to terminate the program.
- * @return Returns a pointer to the memory where the read file is stored.
- */
-void *safe_malloc(size_t n)
-{
-    void *p = malloc(n);
-    if (p == NULL)
-    {
-        fprintf(stderr, "Fatal: failed to allocate %zu bytes.\n", n);
-        abort();
-    }
-    return p;
-}
-
-/**
- * @brief This function reads the file "input.txt" from within the same directory.
- * @return Returns a pointer to the memory where the read file is stored.
- */
-FILE *getfile()
-{
-    char *filename = FILE_NAME;
-    FILE *fp = fopen(filename, "r");
-
-    if (fp == NULL)
-    {
-        printf("Error: Unable to open file %s\n", filename);
-        exit(1);
-    }
-    return fp;
 }

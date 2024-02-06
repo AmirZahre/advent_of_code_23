@@ -5,14 +5,8 @@
 #include <time.h>
 #include <limits.h>
 
-// typedef struct string_parse_results{
-//     char initial_string;
-//     char substring;
-//     int initial_string_length;
-//     int first_occurance_index;
-//     int last_occurance_index;
-//     char remaining_string;
-// } string_parse_results;
+#include "safe_malloc.h"
+#include "get_file.h"
 
 int parse_string(char *string, int *total);
 void get_number_words(char *string, int *min_left_index, int *max_right_index, int *min_left_number, int *max_right_number);
@@ -22,8 +16,6 @@ void reverse_string(const char *string, char *reversed_string);
 void convert_word_to_number(char *number_word, int *converted_number);
 void get_numbers(const char *string, int *min_left_index, int *max_right_index, int *min_left_number, int *max_right_number);
 int concat_first_last(int *first_digit, int *last_digit);
-void *safe_malloc(size_t n);
-FILE *getFile();
 
 const char *number_word_array[] = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
 
@@ -37,7 +29,8 @@ const char *number_word_array[] = {"one", "two", "three", "four", "five", "six",
  */
 int main()
 {
-    FILE *fp = getFile();
+    char *filename = "/workspaces/advent_code_23/2023/Day_01/input.txt";    // Specify .txt file
+    FILE *fp = getFile(filename);
 
     int total = 0;
 
@@ -241,42 +234,4 @@ int concat_first_last(int *first_digit, int *last_digit)
     }
     int concatenated = (*first_digit * 10) + *last_digit;
     return concatenated;
-}
-
-/**
- * @brief Wrapper around standard malloc function that handles memory allocation gracefully
- * @details https://stackoverflow.com/a/35027099
- * If malloc fails to allocate memory (which would cause it to return NULL),
- * rather than returning NULL to the caller, safe_malloc prints an error message to
- * stderr and then calls abort() to terminate the program.
- * @return Returns a pointer to the memory where the read file is stored.
- */
-void *safe_malloc(size_t n)
-{
-    void *p = malloc(n);
-    if (p == NULL)
-    {
-        fprintf(stderr, "Fatal: failed to allocate %zu bytes.\n", n);
-        abort();
-    }
-    return p;
-}
-
-/**
- * @brief This function reads the file "input.txt" from within the same directory.
- * @return Returns a pointer to the memory where the read file is stored.
- */
-FILE *getFile()
-{
-    char *filename = "input.txt";    // Specify .txt file
-    FILE *fp = fopen(filename, "r"); // Open .txt file, assign to variable file
-
-    // Error handling to gracefully handle cases where the file cannot be opened
-    if (fp == NULL)
-    {
-        printf("Error: could not open the file %s\n", filename);
-        exit(1);
-    }
-
-    return fp;
 }
