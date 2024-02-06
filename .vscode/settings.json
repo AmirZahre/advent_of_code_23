@@ -6,5 +6,6 @@
         "limits": "c",
         "type_traits": "c",
         "safe_malloc.h": "c"
-    }
+    },
+    "cmake.sourceDirectory": "/workspaces/advent_code_23/2023"
 }
