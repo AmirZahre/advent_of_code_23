@@ -1,11 +1,3 @@
 {
-    "files.associations": {
-        "time.h": "c",
-        "limits.h": "c",
-        "string.h": "c",
-        "limits": "c",
-        "type_traits": "c",
-        "safe_malloc.h": "c"
-    },
-    "cmake.sourceDirectory": "/workspaces/advent_code_23/2023"
+    "cmake.sourceDirectory": "/workspaces/advent_code_23"
 }
