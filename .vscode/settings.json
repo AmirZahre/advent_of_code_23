@@ -1,3 +1,6 @@
 {
-    "cmake.sourceDirectory": "/workspaces/advent_code_23"
+    "cmake.sourceDirectory": "/workspaces/advent_code_23",
+    "files.associations": {
+        "safe_malloc.h": "c"
+    }
 }

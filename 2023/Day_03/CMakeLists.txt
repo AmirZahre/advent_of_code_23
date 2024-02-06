@@ -9,3 +9,4 @@ target_include_directories(Day_03 PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
 # Link 'mylib' library to Day_03 executable
 target_link_libraries(Day_03 PRIVATE safe_malloc)
+target_link_libraries(Day_03 PRIVATE get_file)
