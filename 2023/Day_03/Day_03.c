@@ -38,18 +38,17 @@ int main(void)
     while (fgets(line, max_string_length, fp) != NULL)
     {
         // printf("row %i\n", row_index);
+        // printf("\n%i\n", number_list[row_index].value);
         parse_string(line, row_index++, number_list);
     }
 
-    // for (int i = 0; i < 15; ){
+    // for (int i = 0; i < 15; i++){
     //     printf("\n%i\n", number_list[i].value);
-    //     i++;
     // };
-            // printf("%i\n ", int_current_num);
-            // printf("right %i left %i\n ", idx_left, idx_right);
+    // printf("%i\n ", int_current_num);
+    // printf("right %i left %i\n ", idx_left, idx_right);
 
-            // printf("is_symbol: %i is_number: %i\n\n", number_list[row_index].is_symbol , number_list[row_index].is_number);
-
+    // printf("is_symbol: %i is_number: %i\n\n", number_list[row_index].is_symbol , number_list[row_index].is_number);
 
     fclose(fp);
     free(line);
@@ -64,7 +63,7 @@ void parse_string(char *line, int row_index, struct number *number_list)
     // struct number number_list[MAX_NUMBERS];
     // number_list[2].idx_left = 5;
 
-    for (int i = 0; i < strlen(line); i++)
+    for (int i = 0; i < strlen(line); i++) // for each character within the provided line
     {
         char current_character = line[i];
 
@@ -81,33 +80,31 @@ void parse_string(char *line, int row_index, struct number *number_list)
             int idx_right = i;
             int int_current_num = atoi(tmp_number);
 
+            // printf("%i\n", n);
             number_list[n].value = int_current_num;
 
-            if (int_current_num == 0) {
+            if (int_current_num == 0)
+            {
                 number_list[n].is_symbol = 1;
                 number_list[n].is_number = 0;
-            } else {
+            }
+            else
+            {
                 number_list[n].is_number = 1;
                 number_list[n].is_symbol = 0;
             }
 
+        
             printf("%i\n ", int_current_num);
             printf("right %i left %i\n ", idx_left, idx_right);
 
             printf("is_symbol: %i is_number: %i\n\n", number_list[n].is_symbol , number_list[n].is_number);
-
+            n++;
         }
 
-        n++;
+        
 
         memset(tmp_number, 0, 100);
         x = 0;
-
     }
-    // for (int i = 0; i < 12; i++){
-    //     printf("is number: %i is symbol: %i\n", number_list[i].is_number, number_list[i].is_symbol);
-    //     }
-
-    }
-
-
+}
