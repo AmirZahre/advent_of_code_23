@@ -61,7 +61,7 @@ void capture_number(char *line, int row_index)
     {
         char current_character = line[i];
 
-    if (current_character != '.') {
+    if (current_character != '.' && current_character != '\n') {
 
         while (isdigit(current_character)){
             tmp_number[x++] = current_character;
