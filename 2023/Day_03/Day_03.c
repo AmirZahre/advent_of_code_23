@@ -42,7 +42,6 @@ int main(void)
         // printf("\n%i\n", number_list[row_index].value);
         parse_string(line, row_index++, number_list, &n);
         // printf("%d\n", n);
-        
     }
 
     // for (int i = 0; i < 15; i++){
@@ -52,8 +51,7 @@ int main(void)
     // printf("right %i left %i\n ", idx_left, idx_right);
 
     // printf("is_symbol: %i is_number: %i\n\n", number_list[row_index].is_symbol , number_list[row_index].is_number);
-    
-    
+
     fclose(fp);
     free(line);
 }
@@ -61,55 +59,51 @@ int main(void)
 void parse_string(char *line, int row_index, struct number *number_list, int *n)
 {
 
-    int x = 0; // reset at each for loop - used to track consecutive int's
-    char *tmp_number = safe_malloc(100);
-
     // struct number number_list[MAX_NUMBERS];
     // number_list[2].idx_left = 5;
 
     for (int i = 0; i < strlen(line); i++) // for each character within the provided line
     {
-        
+        // char *tmp_number = safe_malloc(100);
+        int x = 0; // reset at each for loop - used to track consecutive int's
+
         char current_character = line[i];
 
         if (current_character != '.' && current_character != '\n')
         {
-            // printf("%d\n", *n);  
-            while (isdigit(current_character))
-            {
-                tmp_number[x++] = current_character;
-                current_character = line[++i];
-            }
 
-            int idx_left = i - strlen(tmp_number);
-            int idx_right = i;
-            int int_current_num = atoi(tmp_number);
+            if isdigit(current_character) {
+                char *tmp_number = safe_malloc(100);
 
-            // printf("%i\n", row_index);
-            number_list[row_index].value = int_current_num;
-            // printf("%i\n\n", number_list[row_index].value);
+                while (isdigit(current_character))
+                {
+                    tmp_number[x++] = current_character;
+                    current_character = line[++i];
+                }
 
-            if (int_current_num == 0)
-            {
-                number_list[row_index].is_symbol = 1;
-                number_list[row_index].is_number = 0;
-            }
-            else
-            {
+                int idx_left = i - strlen(tmp_number);
+                int idx_right = i;
+                int int_current_num = atoi(tmp_number);
+
+                number_list[row_index].value = int_current_num;
                 number_list[row_index].is_number = 1;
-                number_list[row_index].is_symbol = 0;
+
+                printf("%i ", int_current_num);
+                printf("row %i left %i right %i\n ", row_index, idx_left, idx_right);
+
+                free(tmp_number);
+                
+            } else { //is symbol
+                number_list[row_index].value = -1;
+                number_list[row_index].is_symbol = 1;
+                printf("-1 row %i index %i\n", row_index, i);
+
             }
 
-            printf("%i\n ", int_current_num);
-            printf("right %i left %i\n ", idx_left, idx_right);
-
-            printf("is_symbol: %i is_number: %i\n\n", number_list[*n].is_symbol , number_list[*n].is_number);
 
             (*n)++;
-            
         }
 
-        memset(tmp_number, 0, 100);
-        x = 0;
+        
     }
 }
