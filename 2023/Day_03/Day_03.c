@@ -41,8 +41,6 @@ int main(void)
         parse_string(line, row_index++, number_list, &n);
     }
 
-
-
     fclose(fp);
     free(line);
 }
@@ -59,39 +57,60 @@ void parse_string(char *line, int row_index, struct number *number_list, int *n)
         if (current_character != '.' && current_character != '\n')
         {
 
-            if isdigit(current_character) {
+            if isdigit (current_character)
+            {
                 char *tmp_number = safe_malloc(100);
-
-                
                 while (isdigit(current_character))
                 {
                     tmp_number[x++] = current_character;
                     current_character = line[++i];
                 }
 
-                int idx_left = i - strlen(tmp_number);
+                int idx_left = i - strlen(tmp_number) - 1;
                 int idx_right = i;
                 int int_current_num = atoi(tmp_number);
 
-                number_list[row_index].value = int_current_num;
-                number_list[row_index].is_number = 1;
+                number_list[*n].value = int_current_num;
+                number_list[*n].is_number = 1;
+                number_list[*n].is_symbol = 0;
+                number_list[*n].idx_left = i - strlen(tmp_number) - 1;
+                number_list[*n].idx_right = i;
 
-                printf("%i ", int_current_num);
-                printf("row %i left %i right %i\n ", row_index, idx_left, idx_right);
+                // printf("%i ", int_current_num);
+                // printf("row %i left %i right %i\n ", row_index, idx_left, idx_right);
 
                 free(tmp_number);
                 --i;
-                
-            } else { //is symbol
-                number_list[row_index].value = -1;
-                number_list[row_index].is_symbol = 1;
-                printf("-1 row %i index %i\n", row_index, i);
-
             }
+            else
+            { // is symbol
+                number_list[*n].value = -1;
+                number_list[*n].is_number = 0;
+                number_list[*n].is_symbol = 1;
+                number_list[*n].idx_left = i;
+                number_list[*n].idx_right = i;
+
+                int idx_left = i;
+                int idx_right = i;
+            }
+            printf("pos: %d\n", *n);
+
+            printf("value: %i\n"
+            "is_number: %i\n"
+            "is_symbol: %i\n"
+            "idx_left: %i\n"
+            "idx_right: %i\n\n", 
+            number_list[*n].value, number_list[*n].is_number, number_list[*n].is_symbol,  number_list[*n].idx_left, number_list[*n].idx_right);
 
             (*n)++;
         }
-
-        
     }
+}
+
+
+void add_to_number_struct(struct number *number_list, int *n){
+
+
+
+    
 }
