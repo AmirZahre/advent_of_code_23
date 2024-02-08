@@ -38,19 +38,10 @@ int main(void)
     // Begin cycling through each line from within fp
     while (fgets(line, max_string_length, fp) != NULL)
     {
-        // printf("row %i\n", row_index);
-        // printf("\n%i\n", number_list[row_index].value);
         parse_string(line, row_index++, number_list, &n);
-        // printf("%d\n", n);
     }
 
-    // for (int i = 0; i < 15; i++){
-    //     printf("\n%i\n", number_list[i].value);
-    // };
-    // printf("%i\n ", int_current_num);
-    // printf("right %i left %i\n ", idx_left, idx_right);
 
-    // printf("is_symbol: %i is_number: %i\n\n", number_list[row_index].is_symbol , number_list[row_index].is_number);
 
     fclose(fp);
     free(line);
@@ -59,12 +50,8 @@ int main(void)
 void parse_string(char *line, int row_index, struct number *number_list, int *n)
 {
 
-    // struct number number_list[MAX_NUMBERS];
-    // number_list[2].idx_left = 5;
-
     for (int i = 0; i < strlen(line); i++) // for each character within the provided line
     {
-        // char *tmp_number = safe_malloc(100);
         int x = 0; // reset at each for loop - used to track consecutive int's
 
         char current_character = line[i];
@@ -75,6 +62,7 @@ void parse_string(char *line, int row_index, struct number *number_list, int *n)
             if isdigit(current_character) {
                 char *tmp_number = safe_malloc(100);
 
+                
                 while (isdigit(current_character))
                 {
                     tmp_number[x++] = current_character;
@@ -92,6 +80,7 @@ void parse_string(char *line, int row_index, struct number *number_list, int *n)
                 printf("row %i left %i right %i\n ", row_index, idx_left, idx_right);
 
                 free(tmp_number);
+                --i;
                 
             } else { //is symbol
                 number_list[row_index].value = -1;
@@ -99,7 +88,6 @@ void parse_string(char *line, int row_index, struct number *number_list, int *n)
                 printf("-1 row %i index %i\n", row_index, i);
 
             }
-
 
             (*n)++;
         }
