@@ -13,15 +13,15 @@
 struct number
 {
     int value;
-    int is_number;
-    int is_symbol;
     int idx_left;
     int idx_right;
+    int row;
     int valid_number;
 };
 
 // function prototypes
 void parse_string(char *line, int row_index, struct number *number_list, int *n);
+void validate_numbers(struct number *number_list, int *n);
 
 int main(void)
 {
@@ -41,12 +41,15 @@ int main(void)
         parse_string(line, row_index++, number_list, &n);
     }
 
+    validate_numbers(number_list, &n);
+
     fclose(fp);
     free(line);
 }
 
 void parse_string(char *line, int row_index, struct number *number_list, int *n)
 {
+    
 
     for (int i = 0; i < strlen(line); i++) // for each character within the provided line
     {
@@ -56,6 +59,7 @@ void parse_string(char *line, int row_index, struct number *number_list, int *n)
 
         if (current_character != '.' && current_character != '\n')
         {
+            number_list[*n].row = row_index;
 
             if isdigit (current_character)
             {
@@ -71,13 +75,8 @@ void parse_string(char *line, int row_index, struct number *number_list, int *n)
                 int int_current_num = atoi(tmp_number);
 
                 number_list[*n].value = int_current_num;
-                number_list[*n].is_number = 1;
-                number_list[*n].is_symbol = 0;
                 number_list[*n].idx_left = i - strlen(tmp_number) - 1;
                 number_list[*n].idx_right = i;
-
-                // printf("%i ", int_current_num);
-                // printf("row %i left %i right %i\n ", row_index, idx_left, idx_right);
 
                 free(tmp_number);
                 --i;
@@ -85,32 +84,30 @@ void parse_string(char *line, int row_index, struct number *number_list, int *n)
             else
             { // is symbol
                 number_list[*n].value = -1;
-                number_list[*n].is_number = 0;
-                number_list[*n].is_symbol = 1;
                 number_list[*n].idx_left = i;
                 number_list[*n].idx_right = i;
-
-                int idx_left = i;
-                int idx_right = i;
             }
-            printf("pos: %d\n", *n);
-
-            printf("value: %i\n"
-            "is_number: %i\n"
-            "is_symbol: %i\n"
-            "idx_left: %i\n"
-            "idx_right: %i\n\n", 
-            number_list[*n].value, number_list[*n].is_number, number_list[*n].is_symbol,  number_list[*n].idx_left, number_list[*n].idx_right);
 
             (*n)++;
         }
     }
 }
 
+void validate_numbers(struct number *number_list, int *n)
+{
 
-void add_to_number_struct(struct number *number_list, int *n){
+    int window_start = 0;
+    int window_end = 2;
 
+    for (int i = 0; i < *n; i++)
+    {
 
+        printf("pos: %d\n", i);
 
-    
+        printf("row: %i\n"
+               "value: %i\n"
+               "idx_left: %i\n"
+               "idx_right: %i\n\n",
+               number_list[i].row, number_list[i].value, number_list[i].idx_left, number_list[i].idx_right);
+    }
 }
