@@ -102,32 +102,65 @@ void parse_string(char *line, int row_index, struct number *number_list, struct 
 void validate_numbers(struct number *number_list, struct symbol *symbol_list, int *number_count, int *symbol_count)
 {
 
-    int window_start = 0;
-    int window_end = 2;
     printf("NUMBERS:\n");
-    for (int i = 0; i < *number_count; i++)
-    {
-        // if (number_list[i].row >= window_start && number_list[i].row <= window_end) // sliding window
-        // {
 
-        printf("pos: %d\n"
-               "row: %i\n"
-               "value: %i\n"
-               "idx_left: %i\n"
-               "idx_right: %i\n\n",
-               i, number_list[i].row, number_list[i].value, number_list[i].idx_left, number_list[i].idx_right);
-        // }
+    int i = 0;
+    int row_start = 0;
+    int row_end = 1;
+    for (int current_row = row_start; current_row < row_end;) // get values only from a specific row
+    {
+
+        if (number_list[i].row == current_row)
+        {
+            printf("pos: %d\n"
+                   "row: %i\n"
+                   "value: %i\n"
+                   "idx_left: %i\n"
+                   "idx_right: %i\n\n",
+                   current_row, number_list[i].row, number_list[i].value, number_list[i].idx_left, number_list[i].idx_right);
+
+
+            printf(
+                "row: %i\n"
+                "idx: %i\n\n",
+                symbol_list[i].row, symbol_list[i].idx);
+
+
+            i++;
+        }
+        else
+        {
+            current_row++;
+        }
     }
 
-    printf("SYMBOLS:\n");
-    for (int i = 0; i < *symbol_count; i++)
-    {
-        printf(
-            "row: %i\n"
-            "idx: %i\n\n",
-            symbol_list[i].row, symbol_list[i].idx);
-    }
 
+
+    // printf("\nSYMBOLS:\n");
+    // for (int i = 0; i < *symbol_count; i++)
+    // {
+    //     printf(
+    //         "row: %i\n"
+    //         "idx: %i\n\n",
+    //         symbol_list[i].row, symbol_list[i].idx);
+    // }
 }
 
 
+
+    // int window_start = 0;
+    // int window_end = 2;
+    // printf("NUMBERS:\n");
+    // for (int i = 0; i < *number_count; i++)
+    // {
+    //     // if (number_list[i].row >= window_start && number_list[i].row <= window_end) // sliding window
+    //     // {
+
+    //     printf("pos: %d\n"
+    //            "row: %i\n"
+    //            "value: %i\n"
+    //            "idx_left: %i\n"
+    //            "idx_right: %i\n\n",
+    //            i, number_list[i].row, number_list[i].value, number_list[i].idx_left, number_list[i].idx_right);
+    //     // }
+    // }
