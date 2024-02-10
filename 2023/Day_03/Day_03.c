@@ -19,13 +19,20 @@ struct number
     int valid_number;
 };
 
+struct symbol
+{
+    int idx;
+    int row;
+};
+
 // function prototypes
-void parse_string(char *line, int row_index, struct number *number_list, int *n);
-void validate_numbers(struct number *number_list, int *n);
+void parse_string(char *line, int row_index, struct number *number_list, struct symbol *symbol_list, int *number_count, int *symbol_count);
+void validate_numbers(struct number *number_list, struct symbol *symbol_list, int *number_sount, int *symbol_count);
 
 int main(void)
 {
     struct number number_list[MAX_NUMBERS];
+    struct symbol symbol_list[MAX_NUMBERS];
 
     char *filename = "/workspaces/advent_code_23/2023/Day_03/" FILE_NAME; // Specify .txt file
     FILE *fp = getFile(filename);
@@ -33,23 +40,23 @@ int main(void)
     int max_string_length = MAX_STRING_LENGTH;
     char *line = (char *)safe_malloc(sizeof(char) * max_string_length); // Use safe_malloc instead of malloc to allocate memory for each line
 
-    int n = 0; // intention is for n to be incrimented by 1 each time a number or symbol are encountered
+    int number_count = 0; // intention is for n to be incrimented by 1 each time a number or symbol are encountered
+    int symbol_count = 0;
     int row_index = 0;
     // Begin cycling through each line from within fp
     while (fgets(line, max_string_length, fp) != NULL)
     {
-        parse_string(line, row_index++, number_list, &n);
+        parse_string(line, row_index++, number_list, symbol_list, &number_count, &symbol_count);
     }
 
-    validate_numbers(number_list, &n);
+    validate_numbers(number_list, symbol_list, &number_count, &symbol_count);
 
     fclose(fp);
     free(line);
 }
 
-void parse_string(char *line, int row_index, struct number *number_list, int *n)
+void parse_string(char *line, int row_index, struct number *number_list, struct symbol *symbol_list, int *number_count, int *symbol_count)
 {
-    
 
     for (int i = 0; i < strlen(line); i++) // for each character within the provided line
     {
@@ -59,7 +66,7 @@ void parse_string(char *line, int row_index, struct number *number_list, int *n)
 
         if (current_character != '.' && current_character != '\n')
         {
-            number_list[*n].row = row_index;
+            number_list[*number_count].row = row_index;
 
             if isdigit (current_character)
             {
@@ -74,40 +81,53 @@ void parse_string(char *line, int row_index, struct number *number_list, int *n)
                 int idx_right = i;
                 int int_current_num = atoi(tmp_number);
 
-                number_list[*n].value = int_current_num;
-                number_list[*n].idx_left = i - strlen(tmp_number) - 1;
-                number_list[*n].idx_right = i;
+                number_list[*number_count].value = int_current_num;
+                number_list[*number_count].idx_left = i - strlen(tmp_number) - 1;
+                number_list[*number_count].idx_right = i;
+                (*number_count)++;
 
                 free(tmp_number);
                 --i;
             }
             else
             { // is symbol
-                number_list[*n].value = -1;
-                number_list[*n].idx_left = i;
-                number_list[*n].idx_right = i;
+                symbol_list[*symbol_count].idx = i;
+                symbol_list[*symbol_count].row = row_index;
+                (*symbol_count)++;
             }
-
-            (*n)++;
         }
     }
 }
 
-void validate_numbers(struct number *number_list, int *n)
+void validate_numbers(struct number *number_list, struct symbol *symbol_list, int *number_count, int *symbol_count)
 {
 
     int window_start = 0;
     int window_end = 2;
-
-    for (int i = 0; i < *n; i++)
+    printf("NUMBERS:\n");
+    for (int i = 0; i < *number_count; i++)
     {
+        // if (number_list[i].row >= window_start && number_list[i].row <= window_end) // sliding window
+        // {
 
-        printf("pos: %d\n", i);
-
-        printf("row: %i\n"
+        printf("pos: %d\n"
+               "row: %i\n"
                "value: %i\n"
                "idx_left: %i\n"
                "idx_right: %i\n\n",
-               number_list[i].row, number_list[i].value, number_list[i].idx_left, number_list[i].idx_right);
+               i, number_list[i].row, number_list[i].value, number_list[i].idx_left, number_list[i].idx_right);
+        // }
     }
+
+    printf("SYMBOLS:\n");
+    for (int i = 0; i < *symbol_count; i++)
+    {
+        printf(
+            "row: %i\n"
+            "idx: %i\n\n",
+            symbol_list[i].row, symbol_list[i].idx);
+    }
+
 }
+
+
